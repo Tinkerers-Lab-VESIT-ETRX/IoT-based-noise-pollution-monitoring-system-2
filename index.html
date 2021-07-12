@@ -1,0 +1,185 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Charts.js</title>
+    <link rel="stylesheet" href="style.css">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="jumbotorn bg-success text-center">
+		<br><br>
+		<h2 class="text-white font-weight-dark">NOISE MONITORING SYSTEM</h2>
+		<br>
+		<br>
+	</div>
+	<br><br><br><br>
+	<div class="container">
+		<select name="" id="" class="form-select">
+			<option value="">2021-06-29
+			</option>
+		</select>
+	</div>
+	
+<br><br><br>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-6">
+				<div class="card" class="chart">
+					<canvas id="myChart" width="" height=""></canvas>
+			</div>
+			</div>
+
+			<div class="col-6">
+				<div class="card" class="chart">
+					<canvas id="Chart" width="" height=""></canvas>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+</body>
+</html>
+<script>
+	const Http = new XMLHttpRequest();
+const url='https://sensor-23e2f-default-rtdb.asia-southeast1.firebasedatabase.app/noise_data.json';
+Http.open("GET", url);
+Http.send();
+
+            var xaxis=[];
+            var yaxis=[];
+            var date=[];
+Http.onreadystatechange = (e) => {
+    if (Http.readyState == XMLHttpRequest.DONE){
+        console.log(Http.responseText)
+
+ 
+        var resData=JSON.parse(Http.responseText);
+        console.log(resData.length);
+        var i;
+        var plotData=[];
+        
+        for(i=0;i<resData.length;i++){
+            var y=resData[i]['reading'];
+            var x=resData[i]['time'];
+            var z=resData[i]['date'];
+            xaxis.push(x);
+            yaxis.push(y);
+            date.push(z);
+
+        }
+    }
+
+  
+        }
+        console.log(xaxis);
+        console.log(yaxis);
+        console.log(date);
+        
+        console.log("x");
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+	// The type of chart we want to create
+	type: 'line', // also try bar or other graph types
+
+	// The data for our dataset
+	data: {
+		labels: xaxis,
+		// Information about the dataset
+    datasets: [{
+			label: "Noise Monitoring System",
+			backgroundColor: 'purple',
+			// borderColor: 'royalblue',
+			data: yaxis,
+			backgroundColor:'pink',
+		}]
+	},
+
+	// Configuration options
+	options: {
+    layout: {
+      padding: 10,
+    },
+		legend: {
+			position: 'top',
+		},
+		title: {
+			display: false,
+			text: 'Population'
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'Noise level '
+				}
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'Time'
+				}
+			}]
+		}
+	}
+});
+
+
+var ctx1 = document.getElementById('Chart').getContext('2d');
+var chart1 = new Chart(ctx1, {
+	// The type of chart we want to create
+	type: 'bar', // also try bar or other graph types
+
+	// The data for our dataset
+	data: {
+		labels: xaxis,
+		// Information about the dataset
+    datasets: [{
+			label: "Noise Monitoring System",
+			backgroundColor: 'blue',
+			// borderColor: 'royalblue',
+			data: yaxis,
+		}]
+		
+	},
+
+	// Configuration options
+	options: {
+    layout: {
+      padding: 10,
+    },
+		legend: {
+			position: 'top',
+		},
+		title: {
+			display: false,
+			text: 'Population'
+		},
+		scales: {
+			yAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'Noise level '
+				}
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'Time'
+				}
+			}]
+		}
+	}
+});
+</script>
